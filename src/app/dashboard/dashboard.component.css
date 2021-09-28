@@ -1,0 +1,42 @@
+.h2{
+ text-align: center;
+}
+
+.heores-menu {
+
+padding: 0;
+margin: auto;
+max-width: 1000px;
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+justify-content: space-around;
+align-content: flex-start;
+align-items: flex-start;
+
+}
+
+a{ 
+
+background-color: aqua;
+border-radius: 2px;
+padding: 1rem;
+text-decoration: none;    
+display: inline-block;
+color: black;
+text-align: center;
+width: 100%;
+max-width: 70px;
+margin: 0 10px 10px 0;
+box-sizing: border-box;
+order: 0;
+flex:0 1 auto;
+align-self: auto;
+
+
+}
+
+a:hover{
+
+ background-color: brown;   
+}

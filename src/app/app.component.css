@@ -1,0 +1,26 @@
+nav a {
+
+ padding: 1rem;
+ text-decoration: none;
+ margin-top: 10px;
+ margin-right: 10px;
+ display: inline-block;
+ background-color: burlywood;
+ color: crimson;
+ border-radius: 4px;
+
+}
+
+nav a:hover{
+
+color: gold;
+background-color: hotpink;
+
+}
+
+nav a.active {
+
+background-color: lawngreen;
+
+
+}
