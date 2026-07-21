@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 16
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run root component unit tests
+        run: npm test -- --watch=false --browsers=ChromeHeadless --include=src/app/app.component.spec.ts
+
+      - name: Build production bundle
+        run: npm run build -- --configuration production
+
+      - name: Audit browser runtime dependencies
+        shell: bash
+        run: |
+          mkdir -p runtime-audit
+          node <<'NODE'
+          const fs = require('fs');
+          const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          const buildOnly = new Set([
+            '@angular/compiler',
+            '@angular/platform-browser-dynamic',
+            'i18n'
+          ]);
+          const dependencies = Object.fromEntries(
+            Object.entries(pkg.dependencies || {}).filter(([name]) => !buildOnly.has(name))
+          );
+          fs.writeFileSync(
+            'runtime-audit/package.json',
+            `${JSON.stringify({ private: true, dependencies }, null, 2)}\n`
+          );
+          NODE
+          cd runtime-audit
+          npm install --package-lock-only --ignore-scripts
+          npm audit --omit=dev --audit-level=critical

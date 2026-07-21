@@ -1,27 +1,35 @@
-# TourOfHeroes
+# Tour of Heroes
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.2.
+Angular learning application based on the official Tour of Heroes tutorial. The project demonstrates components, routing, services, forms and client-side state in a compact example.
 
-## Development server
+## Requirements
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+- Node.js 14–16 (compatible with Angular 12)
+- npm 6 or newer
 
-## Code scaffolding
+## Local development
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```bash
+npm ci
+npm start
+```
 
-## Build
+Open `http://localhost:4200`.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Quality checks
 
-## Running unit tests
+```bash
+npm test -- --watch=false --browsers=ChromeHeadless
+npm run build -- --configuration production
+npm audit --omit=dev --audit-level=critical
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Project structure
 
-## Running end-to-end tests
+- `src/app` – application components, services and routing
+- `src/assets` – static assets
+- `src/environments` – environment-specific configuration
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Maintenance
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+The project currently uses Angular 12. Dependency updates should be applied incrementally and validated with tests and a production build before merging.
