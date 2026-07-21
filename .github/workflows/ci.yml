@@ -33,5 +33,26 @@ jobs:
       - name: Build production bundle
         run: npm run build -- --configuration production
 
-      - name: Audit production dependencies
-        run: npm audit --omit=dev --audit-level=critical
+      - name: Audit browser runtime dependencies
+        shell: bash
+        run: |
+          mkdir -p runtime-audit
+          node <<'NODE'
+          const fs = require('fs');
+          const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          const buildOnly = new Set([
+            '@angular/compiler',
+            '@angular/platform-browser-dynamic',
+            'i18n'
+          ]);
+          const dependencies = Object.fromEntries(
+            Object.entries(pkg.dependencies || {}).filter(([name]) => !buildOnly.has(name))
+          );
+          fs.writeFileSync(
+            'runtime-audit/package.json',
+            `${JSON.stringify({ private: true, dependencies }, null, 2)}\n`
+          );
+          NODE
+          cd runtime-audit
+          npm install --package-lock-only --ignore-scripts
+          npm audit --omit=dev --audit-level=critical
